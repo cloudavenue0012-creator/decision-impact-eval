@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      - name: Unit tests
+        run: pytest -q
+
+      - name: Generate synthetic decisions
+        run: python synth_panel.py --n 100 --seed 42
+
+      - name: Eval — gate on false claims, real effects caught, and the launch-curve trap
+        run: python eval.py --n 100 --seed 42 --max-false-claim 0.05 --min-catch 0.60 --min-launch-g3 0.90

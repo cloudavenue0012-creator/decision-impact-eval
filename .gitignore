@@ -1,0 +1,7 @@
+# regenerated each run (ground truth, example panels, per-decision verdicts)
+data/
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
